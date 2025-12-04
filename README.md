@@ -27,7 +27,7 @@ Below are the steps followed with screenshots.
 - Create custom VPC  
 - Enable DNS Resolution  
 
-📷 Screenshot: `screenshots/vpc.jpeg`
+📷 Screenshot: ![VPC Creation](screenshots/vpc.jpeg)
 
 ---
 
