@@ -12,7 +12,7 @@ The design follows AWS networking best-practices using **VPC, Subnets, NAT Gatew
 
 ## 📌 Architecture Diagram
 
-![Architecture](screenshots/Architecture.jpeg)
+screenshots/new arc.drawio.png
 
 
 
