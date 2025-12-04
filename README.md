@@ -1,257 +1,201 @@
-# Secure AWS 2-Tier Architecture: Apache-PHP Web Server on Public Subnet with Private MySQL Database
+# 🏗️ Secure AWS 2-Tier Architecture: Apache-PHP Web Server on Public Subnet with Private MySQL Database
 
-This project demonstrates a secure production-style 2-tier web application deployment on AWS.  
-The web tier runs Apache and PHP on an EC2 instance in the public subnet, while the MySQL database is hosted in a private subnet to ensure isolation and security.
+This project demonstrates a secure **2-tier web application** deployment on AWS, where:
+- **Apache + PHP Web Server** runs in a **public subnet**
+- **MySQL Database** runs in a **private subnet**
+- Database is never exposed to the internet
+- Secure communication happens only through internal VPC network
+
+The design follows AWS networking best-practices using **VPC, Subnets, NAT Gateway, Route Tables, and Security Groups**.
 
 ---
-📌 Architecture Diagram
-screenshots/vpc.jpeg
 
+## 📌 Architecture Diagram
 
-(Replace this with your uploaded architecture image)
+![VPC Architecture](screenshots/vpc.jpeg)
 
-🚀 Project Workflow
+---
+
+# 🚀 Project Workflow
 
 Below are the steps followed with screenshots.
 
-1️⃣ Create VPC (10.0.0.0/16)
+---
 
-Create custom VPC
+## 1️⃣ Create VPC (10.0.0.0/16)
 
-Enable DNS Resolution
+- Create custom VPC  
+- Enable DNS Resolution  
 
-📷 Screenshot:
-/screenshots/vpc.jpeg
+📷 Screenshot: `screenshots/vpc.jpeg`
 
-2️⃣ Create Subnets
+---
 
-Public Subnet: 10.0.0.0/24
+## 2️⃣ Create Subnets
 
-Private Subnet: 10.0.1.0/24
+- **Public Subnet:** 10.0.0.0/24  
+- **Private Subnet:** 10.0.1.0/24  
 
-📷 Screenshot:
-/screenshots/subnets.jpeg
+📷 Screenshot: `screenshots/subnets.jpeg`
 
-3️⃣ Create and Attach Internet Gateway
+---
 
-Create IGW
+## 3️⃣ Create and Attach Internet Gateway
 
-Attach to VPC
+- Create IGW  
+- Attach IGW to VPC  
 
-📷 Screenshot:
-/screenshots/internet gatway.jpeg
+📷 Screenshot: `screenshots/internet gatway.jpeg`
 
-4️⃣ Create NAT Gateway
+---
 
-Create NAT Gateway in public subnet
+## 4️⃣ Create NAT Gateway
 
-Assign Elastic IP
+- Create NAT gateway in public subnet  
+- Assign Elastic IP  
 
-📷 Screenshot:
-/screenshots/nat-gateway.jpeg
+📷 Screenshot: `screenshots/nat-gateway.jpeg`
 
-5️⃣ Create Route Tables
-Public Route Table
+---
 
-Destination: 0.0.0.0/0 → IGW
+## 5️⃣ Create Route Tables
 
-📷 Screenshot:
-/screenshots/Route-Table.jpeg
+### 🔹 Public Route Table
+- `0.0.0.0/0` → Internet Gateway  
 
-Private Route Table
+📷 Screenshot: `screenshots/Route-Table.jpeg`
 
-Destination: 0.0.0.0/0 → NAT Gateway
+### 🔹 Private Route Table
+- `0.0.0.0/0` → NAT Gateway  
 
-📷 Screenshot:
-/screenshots/prv-subnet-routre.jpeg
+📷 Screenshot: `screenshots/prv-subnet-routre.jpeg`
 
-6️⃣ Security Groups
-Web-SG
+---
 
-Inbound:
+## 6️⃣ Configure Security Groups
 
-HTTP (80) → 0.0.0.0/0
+### 🔹 Web-SG
+Inbound Rules:
+- HTTP (80) → `0.0.0.0/0`
+- SSH (22) → Your Public IP  
 
-SSH (22) → Your Public IP
+📷 Screenshot: `screenshots/web-inbount rule.jpeg`
 
-📷 Screenshot:
-/screenshots/web-inbount rule.jpeg
+---
 
-DB-SG
+### 🔹 DB-SG
+Inbound Rules:
+- MySQL (3306) → Web-SG  
+- SSH (22) → Web-SG / VPC  
 
-Inbound:
+📷 Screenshot: `screenshots/DB-inbound rule.jpeg`
 
-MySQL (3306) → Web-SG
+---
 
-SSH (22) → Web-SG / VPC
+## 7️⃣ Launch EC2 Web Server
 
-📷 Screenshot:
-/screenshots/DB-inbound rule.jpeg
+- AMI: Ubuntu  
+- Subnet: Public  
+- SG: Web-SG  
+- Key Pair: Linux-Keypair  
 
-7️⃣ Launch EC2 (Web Server)
+📷 Screenshot: `screenshots/IAAS-WEB.jpeg`
 
-Ubuntu AMI
+---
 
-Public Subnet
+## 8️⃣ Install Apache & PHP
 
-Security Group = Web-SG
+SSH into Web EC2:
 
-Key Pair = Linux-Keypair
-
-📷 Screenshot:
-/screenshots/IAAS-WEB.jpeg
-
-8️⃣ Configure EC2 (Apache + PHP)
-
-SSH into EC2:
-
+```bash
 sudo apt update
 sudo apt install apache2 -y
 sudo apt install php -y
 sudo service apache2 restart
+```
 
+📷 Screenshot: `screenshots/install apache services.jpeg`
 
-📷 Screenshot:
-/screenshots/install apache services.jpeg
+---
 
-9️⃣ Create MySQL User & Database
+## 9️⃣ Create MySQL User & Permissions
 
-SSH into DB EC2 or RDS and run:
+Login to DB MySQL:
 
-sudo mysql -u root -p
+```sql
 CREATE USER 'appusr'@'%' IDENTIFIED BY 'sqluser2025';
 GRANT ALL PRIVILEGES ON *.* TO 'appusr'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+```
 
+📷 Screenshots:
+- `screenshots/creat sql root acc.jpeg`
+- `screenshots/grant privileges on sql claint.jpeg`
 
-📷 Screenshot:
-/screenshots/creat sql root acc.jpeg
-/screenshots/grant privileges on sql claint.jpeg
+---
 
-🔟 Create Application Database
+## 🔟 Create Database and Insert Data
+
+```sql
 CREATE DATABASE appdb;
 USE appdb;
 
 CREATE TABLE Course(
-  CourseID int,
-  CourseName varchar(1000),
-  Rating numeric(2,1)
+  CourseID INT,
+  CourseName VARCHAR(1000),
+  Rating NUMERIC(2,1)
 );
 
 INSERT INTO Course VALUES
 (1,'AWS Certified Solutions Architect – Associate',4.5),
 (2,'AWS Certified Solutions Architect – Professional',4.6),
 (3,'AWS Certified DevOps Engineer – Professional',4.7);
+```
 
+📷 Screenshot: `screenshots/application create in db.jpeg`
 
-📷 Screenshot:
-/screenshots/application create in db.jpeg
+---
 
-1️⃣1️⃣ Upload Web Application Files
+## 1️⃣1️⃣ Upload Web Files using FileZilla
 
-Using FileZilla:
+- Upload `index.php` to `/var/www/html`  
 
-Connect using EC2 public IP and Key-pair
+📷 Screenshot: `screenshots/FILEZILA insert html file.jpeg`
 
-Upload index.php → /var/www/html
+---
 
-📷 Screenshot:
-/screenshots/FILEZILA insert html file.jpeg
+## 1️⃣2️⃣ Test DB Access from Web Server
 
-1️⃣2️⃣ Web Server Access DB Privately
+```bash
+sudo mysql -h 10.0.1.xx -u appusr -p
+```
 
-Test from Web EC2:
+📷 Screenshot: `screenshots/iaas-web access the db via http.jpeg`
 
-sudo mysql -h 10.0.1.xxx -u appusr -p
+---
 
-
-📷 Screenshot:
-/screenshots/iaas-web access the db via http.jpeg
-
-1️⃣3️⃣ Browser Access
+## 1️⃣3️⃣ Browser Test
 
 Open:
 
+```
 http://<EC2-Public-IP>/index.php
+```
 
+Expected Result → AWS Certification Table
 
-Expected Output = Table:
+📷 Screenshot: `screenshots/IAAS-WEB pull the DB-application.jpeg`
 
-AWS Certifications
+---
 
-Associate 4.5
+# 🛡️ Security Highlights
 
-Professional 4.6
+- DB in private subnet (no public IP)
+- Web server is the only point of entry
+- NAT used for secure outbound access
+- Security Groups follow least-privilege model
+- VPC isolation ensures protection
 
-DevOps 4.7
+---
 
-📷 Screenshot:
-/screenshots/IAS-WEB pull the DB-application.jpeg
-
-🎯 Final Output
-
-EC2 Web Server ← private → MySQL database
-DB is never exposed to public internet.
-
-🛡️ Security Best Practices
-
-No public IP on database
-
-SSH restricted to specific IP
-
-DB access allowed only from Web-SG
-
-NAT used for private internet dependency
-
-VPC isolation
-
-Security Group micro-segmentation
-
-📁 Repository Structure
-.
-├── README.md
-└── screenshots/
-    ├── vpc.jpeg
-    ├── subnets.jpeg
-    ├── internet gatway.jpeg
-    ├── nat-gateway.jpeg
-    ├── Route-Table.jpeg
-    ├── prv-subnet-routre.jpeg
-    ├── DB-inbound rule.jpeg
-    ├── web-inbount rule.jpeg
-    ├── IAAS-WEB.jpeg
-    └── ...
-
-⭐ Improvements (Future)
-
-Use RDS MySQL instead of EC2
-
-Add Application Load Balancer
-
-Auto Scaling Group
-
-S3 website assets
-
-CloudWatch logging
-
-Parameter Store for secrets
-
-Terraform automation
-
-👌 Conclusion
-
-This project demonstrates real AWS infrastructure implementing enterprise-level security for a 2-tier application using:
-
-VPC
-
-Subnets
-
-NAT
-
-Route tables
-
-EC2
-
-MySQL
-
-SSH & HTTP security
+## 📂 Repository Structu
