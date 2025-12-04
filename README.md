@@ -36,8 +36,7 @@ Below are the steps followed with screenshots.
 - **Public Subnet:** 10.0.0.0/24  
 - **Private Subnet:** 10.0.1.0/24  
 
-📷 Screenshot: `screenshots/subnets.jpeg`
-
+📷 Screenshot: ![Subnets](screenshots/subnets.jpeg)
 ---
 
 ## 3️⃣ Create and Attach Internet Gateway
@@ -45,8 +44,7 @@ Below are the steps followed with screenshots.
 - Create IGW  
 - Attach IGW to VPC  
 
-📷 Screenshot: `screenshots/internet gatway.jpeg`
-
+📷 Screenshot:![Internet Gateway](screenshots/internet gatway.jpeg)
 ---
 
 ## 4️⃣ Create NAT Gateway
@@ -54,7 +52,7 @@ Below are the steps followed with screenshots.
 - Create NAT gateway in public subnet  
 - Assign Elastic IP  
 
-📷 Screenshot: `screenshots/nat-gateway.jpeg`
+📷 Screenshot: ![NAT Gateway](screenshots/nat-gateway.jpeg)
 
 ---
 
@@ -63,12 +61,13 @@ Below are the steps followed with screenshots.
 ### 🔹 Public Route Table
 - `0.0.0.0/0` → Internet Gateway  
 
-📷 Screenshot: `screenshots/Route-Table.jpeg`
+📷 Screenshot: ![Route Table](screenshots/Route-Table.jpeg)
+
 
 ### 🔹 Private Route Table
 - `0.0.0.0/0` → NAT Gateway  
 
-📷 Screenshot: `screenshots/prv-subnet-routre.jpeg`
+📷 Screenshot: ![Private Route Table](screenshots/prv-subnet-routre.jpeg)
 
 ---
 
@@ -79,7 +78,7 @@ Inbound Rules:
 - HTTP (80) → `0.0.0.0/0`
 - SSH (22) → Your Public IP  
 
-📷 Screenshot: `screenshots/web-inbount rule.jpeg`
+📷 Screenshot:![Web SG Rules](screenshots/web-inbount rule.jpeg)
 
 ---
 
@@ -88,7 +87,7 @@ Inbound Rules:
 - MySQL (3306) → Web-SG  
 - SSH (22) → Web-SG / VPC  
 
-📷 Screenshot: `screenshots/DB-inbound rule.jpeg`
+📷 Screenshot:![DB SG Rules](screenshots/DB-inbound rule.jpeg)
 
 ---
 
@@ -99,7 +98,8 @@ Inbound Rules:
 - SG: Web-SG  
 - Key Pair: Linux-Keypair  
 
-📷 Screenshot: `screenshots/IAAS-WEB.jpeg`
+📷 Screenshot:![Web EC2](screenshots/IAAS-WEB.jpeg)
+
 
 ---
 
@@ -114,7 +114,8 @@ sudo apt install php -y
 sudo service apache2 restart
 ```
 
-📷 Screenshot: `screenshots/install apache services.jpeg`
+📷 Screenshot: ![Install Apache](screenshots/install apache services.jpeg)
+
 
 ---
 
@@ -129,8 +130,10 @@ FLUSH PRIVILEGES;
 ```
 
 📷 Screenshots:
-- `screenshots/creat sql root acc.jpeg`
-- `screenshots/grant privileges on sql claint.jpeg`
+- ![Create SQL Root](screenshots/creat sql root acc.jpeg)
+
+- ![Grant Privileges](screenshots/grant privileges on sql claint.jpeg)
+
 
 ---
 
@@ -152,7 +155,7 @@ INSERT INTO Course VALUES
 (3,'AWS Certified DevOps Engineer – Professional',4.7);
 ```
 
-📷 Screenshot: `screenshots/application create in db.jpeg`
+📷 Screenshot: ![Application Create](screenshots/application create in db.jpeg)
 
 ---
 
@@ -160,7 +163,7 @@ INSERT INTO Course VALUES
 
 - Upload `index.php` to `/var/www/html`  
 
-📷 Screenshot: `screenshots/FILEZILA insert html file.jpeg`
+📷 Screenshot:![FileZilla Upload](screenshots/FILEZILA insert html file.jpeg)
 
 ---
 
@@ -170,7 +173,7 @@ INSERT INTO Course VALUES
 sudo mysql -h 10.0.1.xx -u appusr -p
 ```
 
-📷 Screenshot: `screenshots/iaas-web access the db via http.jpeg`
+📷 Screenshot: ![Web DB Access](screenshots/iaas-web access the db via http.jpeg)
 
 ---
 
@@ -184,7 +187,8 @@ http://<EC2-Public-IP>/index.php
 
 Expected Result → AWS Certification Table
 
-📷 Screenshot: `screenshots/IAAS-WEB pull the DB-application.jpeg`
+📷 Screenshot: ![Web DB Access](screenshots/iaas-web access the db via http.jpeg)
+
 
 ---
 
