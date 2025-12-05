@@ -72,7 +72,7 @@ Below are the complete steps followed with screenshots.
 - Attach IGW to VPC  
 
 📷 Screenshot:  
-![Internet Gateway](./screenshots/internet-gateway.jpeg)
+![Internet Gateway](./screenshots/Internet gatway.jpeg)
 
 ---
 
