@@ -238,7 +238,7 @@ http://<EC2-Public-IP>/index.php
 Expected Result → AWS Certification Table
 
 📷 Screenshot:  
-![Browser Test](./screenshots/web%20to%20db%20access.jpeg)
+![Web DB Access](./screenshots/iaas-web%20access%20the%20db%20via%20http.jpeg)
 
 
 ---
