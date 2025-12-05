@@ -219,7 +219,8 @@ Upload `index.php` to:
 ## 1️⃣2️⃣ Test DB Access from Web Server
 
 ```bash
-sudo mysql -h 10.0.1.xx -u appusr -p
+ssh ubuntu@10.0.1.44 -i Linux-keypair.pem
+
 ```
 
 📷 Screenshot:  
