@@ -223,7 +223,8 @@ sudo mysql -h 10.0.1.xx -u appusr -p
 ```
 
 📷 Screenshot:  
-![Web DB Access](./screenshots/iaas-web%20access%20the%20db%20via%20http.jpeg)
+![Web to DB Access](./screenshots/web%20to%20db%20access.jpeg)
+
 
 ---
 
